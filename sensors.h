@@ -1,17 +1,18 @@
 #include <NewPing.h>
 
-namespace Sensors{
+namespace Sensors {
 
-// Define sonar:
+// Define NewPing sonar:
 const int TRIGGER_PIN = 2;
 const int ECHO_PIN = 3;
 const int MAX_DISTANCE = 200;
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
-// define namespace consts
+// define other consts
 const int TIME_OUT = 200;
+const int DISTANCE_THRESHOLD = 20;
 
-// Define variables:
+// Define variables
 int distance=0;
 int nextReadAt=0;
 
@@ -24,11 +25,19 @@ bool needsUpdate() {
     return false;
 }
 
-void getDistance() {
-    distance = sonar.ping_cm();
-    Serial.print("Ping: ");
-    Serial.print(distance);
-    Serial.println("cm");
+int getDistance() {
+    if (needsUpdate()) {
+        distance = sonar.ping_cm();
+        Serial.print("Sensors, distance update: ");
+        Serial.print(distance);
+        Serial.println("cm");
+    }
+    return distance;
 }
 
-} //namespace Sensors
+bool isObstacleAhead() {
+    distance = getDistance();
+    return distance < DISTANCE_THRESHOLD;
+}
+
+}

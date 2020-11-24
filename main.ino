@@ -2,9 +2,6 @@
 #include "sensors.h"
 #include "steppers.h"
 
-// VARIABLES
-unsigned long timer = 0;
-
 void setup() {
     Steppers::setup();
 
@@ -14,9 +11,7 @@ void setup() {
 
 void loop() {
     // READ SENSORS:
-    if (Sensors::needsUpdate()) {
-        Sensors::getDistance();
-    }
+    bool wallAhead = Sensors::isObstacleAhead();
   
     // CONTROLL MOTORS
     Steppers::action();
