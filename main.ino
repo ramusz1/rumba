@@ -1,23 +1,23 @@
 
 #include "sensors.h"
 
-// CONSTS
+// VARIABLES
+unsigned long timer = 0;
 
 void setup() {
-  // nothing to do inside the setup
-  Sensors::setup();
-
-  //Begin Serial communication at a baudrate of 9600:
-  Serial.begin(9600);
+    // Begin Serial communication at a baudrate of 9600:
+    Serial.begin(9600);
 }
 
 void loop() {
-  // READ SENSORS:
-  Sensors::action();
-  //TODO
+    // READ SENSORS:
+    if (Sensors::needsUpdate()) {
+        Sensors::getDistance();
+    }
+    //TODO
   
-  // CONTROLL MOTORS
-  // TODO
+    // CONTROLL MOTORS
+    // TODO
 
-  delay(1);
+    delay(1);
 }
