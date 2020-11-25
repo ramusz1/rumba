@@ -1,12 +1,10 @@
-#include <AccelStepper.h>
+#include <Stepper.h>
 
 namespace Steppers{
 
-const int8_t fullStep = 4;
-const int fullRevolutionSteps = 2038;
-int maxSpeed = 1000;
-int speed = 100;
-int acceleration = 200;
+const int stepsPerRevolution = 2048;
+int stepsPerTick = 10;
+int speed = 15;
 
 // Stepper pin mapping:
 // pin1: IN1
@@ -27,28 +25,31 @@ namespace Stpr2{
     const int8_t pin4 = 7;
 }
 
-AccelStepper stepper1 = AccelStepper(fullStep, Stpr1::pin1, Stpr1::pin2, Stpr1::pin3, Stpr1::pin4);
-AccelStepper stepper2 = AccelStepper(fullStep, Stpr2::pin1, Stpr2::pin2, Stpr2::pin3, Stpr2::pin4);
+Stepper stepper1 = Stepper(stepsPerRevolution, Stpr1::pin1, Stpr1::pin2, Stpr1::pin3, Stpr1::pin4);
+Stepper stepper2 = Stepper(stepsPerRevolution, Stpr2::pin1, Stpr2::pin2, Stpr2::pin3, Stpr2::pin4);
 
 void setup() {
     Serial.println("Starting steppers setup");
 
-    stepper1.setMaxSpeed(maxSpeed);
-    stepper1.setAcceleration(acceleration);
     stepper1.setSpeed(speed);
-    stepper1.moveTo(fullRevolutionSteps);
-
-    stepper2.setMaxSpeed(maxSpeed);
-    stepper2.setAcceleration(acceleration);
     stepper2.setSpeed(speed);
-    stepper2.moveTo(fullRevolutionSteps);
-
+    
     Serial.println("Finished steppers setup");
 }
 
-void action() {
-   stepper1.run();
-   stepper2.run();
+void forward() {
+    stepper1.step(-stepsPerTick);
+    stepper2.step(stepsPerTick);
+}
+
+void left() {
+    stepper1.step(stepsPerTick);
+    stepper2.step(stepsPerTick);
+}
+
+void right() {
+    stepper1.step(-stepsPerTick);
+    stepper2.step(-stepsPerTick);
 }
 
 }

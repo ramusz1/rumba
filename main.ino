@@ -14,7 +14,11 @@ void loop() {
     bool wallAhead = Sensors::isObstacleAhead();
   
     // CONTROLL MOTORS
-    Steppers::action();
+    if (wallAhead) {
+        Steppers::left();
+    } else {
+        Steppers::forward();
+    }
 
-    delay(1);
+    delay(.1);
 }
