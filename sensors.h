@@ -9,17 +9,17 @@ const int MAX_DISTANCE = 200;
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 // define other consts
-const int TIME_OUT = 200;
+const int TIME_OUT = 100;
 const int DISTANCE_THRESHOLD = 20;
 
 // Define variables
-int distance=0;
-int nextReadAt=0;
+unsigned long distance=0;
+unsigned long nextReadAt=0;
 
 bool needsUpdate() {
-    long time = millis();
+    unsigned long time = millis();
     if (nextReadAt <= time) {
-        nextReadAt += time + TIME_OUT;
+        nextReadAt = time + TIME_OUT;
         return true;
     }
     return false;
